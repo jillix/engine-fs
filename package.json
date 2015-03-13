@@ -1,0 +1,24 @@
+{
+  "name": "engine-fs",
+  "version": "1.0.0",
+  "description": "File operations in Engine projects.",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jillix/engine-fs.git"
+  },
+  "keywords": [
+    "jxengine",
+    "file",
+    "system"
+  ],
+  "author": "jillix <contact@jillix.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jillix/engine-fs/issues"
+  },
+  "homepage": "https://github.com/jillix/engine-fs"
+}
