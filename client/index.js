@@ -37,7 +37,7 @@ exports.readFile = function (ev, data) {
             data: res,
             project: self.project
         });
-    }).send({
+    }).send(null, {
         path: data.path,
         project: self.project
     });
@@ -66,7 +66,7 @@ exports.write = function (ev, data) {
             data: res,
             project: self.project
         });
-    }).send({
+    }).send(null, {
         path: data.path,
         data: data.data,
         project: self.project
