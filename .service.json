@@ -1,0 +1,15 @@
+{
+    "client": {
+        "methods": {
+            "write": {},
+            "read": {},
+            "setProject": {}
+        },
+        "emits": {
+            "beforeFileWrite": {},
+            "beforeFileRead": {},
+            "fileWritten": {},
+            "fileRead": {}
+        }
+    }
+}
