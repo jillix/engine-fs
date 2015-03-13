@@ -1,8 +1,8 @@
 {
     "client": {
         "methods": {
-            "write": {},
-            "read": {},
+            "writeFile": {},
+            "readFile": {},
             "setProject": {}
         },
         "emits": {
