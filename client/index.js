@@ -57,7 +57,7 @@ exports.readFile = function (ev, data) {
  *
  * @return {undefined}
  */
-exports.write = function (ev, data) {
+exports.writeFile = function (ev, data) {
     var self = this;
     self.emit("beforeFileWrite", ev, data);
     self.link("_writeFile", function (err, res) {
