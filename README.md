@@ -1,6 +1,13 @@
 # Engine Fs
 File operations in Engine projects.
 
+## Events
+
+ - :arrow_up: `beforeFileRead` - Before reading a file.
+ - :arrow_up: `fileRead` - After the file was read.
+ - :arrow_up: `beforeFileWrite` - Before writting a file.
+ - :arrow_up: `fileWritten` - After the file was written.
+
 ## Documentation
 ### `setProject(ev, data)`
 Caches the project value.
