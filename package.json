@@ -25,5 +25,16 @@
   "bugs": {
     "url": "https://github.com/jillix/engine-fs/issues"
   },
+  "flow": [{
+      "in": "_readFile",
+      "out": [{
+          "call": "readFile"
+      }]
+  }, {
+      "in": "_writeFile",
+      "out": [{
+          "call": "writeFile"
+      }]
+  }],
   "homepage": "https://github.com/jillix/engine-fs"
 }
