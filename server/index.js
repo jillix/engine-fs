@@ -21,7 +21,7 @@ exports.readFile = EngineTools.linkData(function (data, link) {
     if (typeof data.path !== "string" || !data.path) { return link.end(new Error("path must be a non-empty string.")); }
     var path = Path.join(PATH_PROJECTS, data.project, data.path);
     Fs.readFile(path, "utf-8", link.end.bind(link));
-};
+});
 
 /**
  * writeFile
