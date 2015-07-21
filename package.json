@@ -6,10 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "components": {
-    "scripts": [
-      "client/index.js"
-    ]
+  "composition": {
+    "flow": [
+      {
+        "on": "readFile",
+        "call": "readFile"
+      },
+      {
+        "on": "writeFile",
+        "call": "writeFile"
+      }
+    ],
+    "client": {
+      "module": [
+        "client/index.js"
+      ]
+    }
   },
   "repository": {
     "type": "git",
@@ -25,24 +37,6 @@
   "bugs": {
     "url": "https://github.com/jillix/engine-fs/issues"
   },
-  "flow": [
-    {
-      "in": "_readFile",
-      "out": [
-        {
-          "call": "readFile"
-        }
-      ]
-    },
-    {
-      "in": "_writeFile",
-      "out": [
-        {
-          "call": "writeFile"
-        }
-      ]
-    }
-  ],
   "homepage": "https://github.com/jillix/engine-fs",
   "dependencies": {
     "engine-tools": "^1.12.0"

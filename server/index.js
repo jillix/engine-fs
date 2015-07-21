@@ -1,11 +1,10 @@
 // Dependencies
 var Fs = require("fs")
   , Path = require("path")
-  , EngineTools = require("engine-tools")
   ;
 
 // Constants
-const PATH_PROJECTS = jxService.paths.projects;
+const PATH_PROJECTS = "/Users/danandrei/work/appsForEngine";
 
 /**
  * readFile
@@ -16,12 +15,38 @@ const PATH_PROJECTS = jxService.paths.projects;
  * @param {Link} link The link object.
  * @return {undefined}
  */
-exports.readFile = EngineTools.linkData(function (data, link) {
-    if (typeof data.project !== "string" || !data.project) { return link.end(new Error("Project must be a non-empty string.")); }
-    if (typeof data.path !== "string" || !data.path) { return link.end(new Error("path must be a non-empty string.")); }
-    var path = Path.join(PATH_PROJECTS, data.project, data.path);
-    Fs.readFile(path, "utf-8", link.end.bind(link));
-});
+exports.readFile = function (stream) {
+    stream.data(function (err, data) {
+
+        if (err) {
+            stream.write(err);
+            return stream.end();
+        }
+
+        // validate data
+        if (typeof data.project !== "string" || !data.project) {
+            stream.write(new Error("Project must be a non-empty string."));
+            return stream.end();
+        }
+        if (typeof data.path !== "string" || !data.path) {
+            stream.write(new Error("Path must be a non-empty string."));
+            return stream.end();
+        }
+        
+        // read file
+        var path = Path.join(PATH_PROJECTS, data.project, data.path);
+        Fs.readFile(path, "utf-8", function (err, data) {
+
+            if (err) {
+                stream.write(err);
+                return stream.end();
+            }
+
+            stream.write(null, data);
+            stream.end();
+        });
+    });
+};
 
 /**
  * writeFile
@@ -32,10 +57,33 @@ exports.readFile = EngineTools.linkData(function (data, link) {
  * @param {Link} link The link object.
  * @return {undefined}
  */
-exports.writeFile = EngineTools.linkData(function (data, link) {
-    if (typeof data.project !== "string" || !data.project) { return link.end(new Error("Project must be a non-empty string.")); }
-    if (typeof data.path !== "string" || !data.path) { return link.end(new Error("path must be a non-empty string.")); }
-    if (typeof data.data !== "string") { return link.end(new Error("The file content must be a string.")); }
-    var path = Path.join(PATH_PROJECTS, data.project, data.path);
-    Fs.writeFile(path, data.data, link.end.bind(link));
-});
+exports.writeFile = function (stream) {
+    stream.data(function (err, data) {
+
+        if (err) {
+            stream.write(err);
+            return stream.end();
+        }
+
+        // validate data
+        if (typeof data.project !== "string" || !data.project) {
+            stream.write(new Error("Project must be a non-empty string."));
+            return stream.end();
+        }
+        if (typeof data.path !== "string" || !data.path) {
+            stream.write(new Error("Path must be a non-empty string."));
+            return stream.end();
+        }
+        if (typeof data.data !== "string") {
+            stream.write(new Error("The file content must be a string."));
+            return stream.end();
+        }
+
+        // write data to file
+        var path = Path.join(PATH_PROJECTS, data.project, data.path);
+        Fs.writeFile(path, data.data, function (err) {
+            stream.write(err);
+            stream.end();
+        });
+    });
+};

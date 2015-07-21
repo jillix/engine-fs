@@ -1,3 +1,12 @@
+function emit(eventName, data) {
+    var self = this;
+    self._streams = self._streams || {};
+
+    // create stream
+    var str = self._streams[eventName] || (self._streams[eventName] = self.flow(eventName));
+    str.write(null, data);
+}
+
 /**
  * setProject
  * Caches the project value.
@@ -11,8 +20,17 @@
  *
  * @return {undefined}
  */
-exports.setProject = function (ev, data) {
-    this.project = data.project;
+exports.setProject = function (stream) {
+    var self = this;
+
+    stream.data(function (err, data) {
+
+        if (err) {
+            return console.error(new Error(err));
+        }
+
+        self.project = data.project;
+    });
 };
 
 /**
@@ -28,18 +46,37 @@ exports.setProject = function (ev, data) {
  *
  * @return {undefined}
  */
-exports.readFile = function (ev, data) {
+exports.readFile = function (stream) {
     var self = this;
-    self.emit("beforeFileRead", ev, data);
-    self.link("_readFile", function (err, res) {
-        self.emit("fileRead", null, {
-            err: err,
-            data: res,
+    stream.data(function (err, data) {
+
+        if (err) {
+            return console.error(new Error(err));
+        }
+
+        emit.call(self, "beforeFileRead", data);
+
+        // create stream
+        var str = self.flow({
+            "call": self._name + "/readFile"
+        });
+
+        // listen for response
+        str.data(function (err, data) {
+
+            // emit response
+            emit.call(self, "fileRead", {
+                err: err,
+                data: data,
+                project: self.project
+            });
+        });
+
+        // send data
+        str.write(null, {
+            path: data.path,
             project: self.project
         });
-    }).send(null, {
-        path: data.path,
-        project: self.project
     });
 };
 
@@ -57,18 +94,37 @@ exports.readFile = function (ev, data) {
  *
  * @return {undefined}
  */
-exports.writeFile = function (ev, data) {
+exports.writeFile = function (stream) {
     var self = this;
-    self.emit("beforeFileWrite", ev, data);
-    self.link("_writeFile", function (err, res) {
-        self.emit("fileWritten", null, {
-            err: err,
-            data: res,
+    stream.data(function (err, data) {
+
+        if (err) {
+            return console.error(new Error(err));
+        }
+
+        emit.call(self, "beforeFileWrite", data);
+
+        // create stream
+        var str = self.flow({
+            "call": self._name + "/writeFile"
+        });
+
+        // listen for response
+        str.data(function (err, data) {
+
+            // emit response
+            emit.call(self, "fileWritten", {
+                err: err,
+                data: data,
+                project: self.project
+            });
+        });
+
+        // send data
+        str.write(null, {
+            path: data.path,
+            data: data.data,
             project: self.project
         });
-    }).send(null, {
-        path: data.path,
-        data: data.data,
-        project: self.project
     });
 };
