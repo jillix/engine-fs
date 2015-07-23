@@ -57,9 +57,7 @@ exports.readFile = function (stream) {
         emit.call(self, "beforeFileRead", data);
 
         // create stream
-        var str = self.flow({
-            "call": self._name + "/readFile"
-        });
+        var str = self.flow("readFile");
 
         var path = data.path;
         // listen for response
@@ -107,9 +105,7 @@ exports.writeFile = function (stream) {
         emit.call(self, "beforeFileWrite", data);
 
         // create stream
-        var str = self.flow({
-            "call": self._name + "/writeFile"
-        });
+        var str = self.flow("writeFile");
 
         // listen for response
         str.data(function (err, data) {

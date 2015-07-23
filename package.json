@@ -8,18 +8,28 @@
   },
   "composition": {
     "flow": [
-      {
-        "on": "readFile",
-        "call": "readFile"
-      },
-      {
-        "on": "writeFile",
-        "call": "writeFile"
-      }
+      [
+        "readFile",
+        "readFile"
+      ],
+      [
+        "writeFile",
+        "writeFile"
+      ]
     ],
     "client": {
       "module": [
         "client/index.js"
+      ],
+      "flow": [
+        [
+          "readFile",
+          ["link", "readFile"]
+        ],
+        [
+          "writeFile",
+          ["link", "writeFile"]
+        ],
       ]
     }
   },
