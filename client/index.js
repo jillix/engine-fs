@@ -61,6 +61,7 @@ exports.readFile = function (stream) {
             "call": self._name + "/readFile"
         });
 
+        var path = data.path;
         // listen for response
         str.data(function (err, data) {
 
@@ -68,13 +69,14 @@ exports.readFile = function (stream) {
             emit.call(self, "fileRead", {
                 err: err,
                 data: data,
+                path: path,
                 project: self.project
             });
         });
 
         // send data
         str.write(null, {
-            path: data.path,
+            path: path,
             project: self.project
         });
     });
