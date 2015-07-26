@@ -24,6 +24,10 @@ exports.readFile = function (stream) {
         }
 
         // validate data
+        if (!data) {
+            stream.write(new Error("Missing data object."));
+            return stream.end();
+        }
         if (typeof data.project !== "string" || !data.project) {
             stream.write(new Error("Project must be a non-empty string."));
             return stream.end();
@@ -66,6 +70,10 @@ exports.writeFile = function (stream) {
         }
 
         // validate data
+        if (!data) {
+            stream.write(new Error("Missing data object."));
+            return stream.end();
+        }
         if (typeof data.project !== "string" || !data.project) {
             stream.write(new Error("Project must be a non-empty string."));
             return stream.end();
