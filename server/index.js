@@ -4,7 +4,7 @@ var Fs = require("fs")
   ;
 
 // Constants
-const PATH_PROJECTS = "/Users/danandrei/work/appsForEngine";
+const PATH_PROJECTS = process.env.ENGINE_APPS || Ul.home() + "/engine_repos";
 
 /**
  * readFile
