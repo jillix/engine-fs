@@ -16,12 +16,7 @@ const PATH_PROJECTS = "/Users/danandrei/work/appsForEngine";
  * @return {undefined}
  */
 exports.readFile = function (stream) {
-    stream.data(function (err, data) {
-
-        if (err) {
-            stream.write(err);
-            return stream.end();
-        }
+    stream.data(function (data) {
 
         // validate data
         if (!data) {
@@ -62,12 +57,7 @@ exports.readFile = function (stream) {
  * @return {undefined}
  */
 exports.writeFile = function (stream) {
-    stream.data(function (err, data) {
-
-        if (err) {
-            stream.write(err);
-            return stream.end();
-        }
+    stream.data(function (data) {
 
         // validate data
         if (!data) {

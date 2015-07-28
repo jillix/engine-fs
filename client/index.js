@@ -23,13 +23,13 @@ function emit(eventName, data) {
 exports.setProject = function (stream) {
     var self = this;
 
-    stream.data(function (err, data) {
-
-        if (err) {
-            return console.error(new Error(err));
-        }
-
+    stream.data(function (data) {
         self.project = data.project;
+    });
+
+    // handle error
+    stream.error(function (err) {
+        return console.error(new Error(err));
     });
 };
 
@@ -48,11 +48,7 @@ exports.setProject = function (stream) {
  */
 exports.readFile = function (stream) {
     var self = this;
-    stream.data(function (err, data) {
-
-        if (err) {
-            return console.error(new Error(err));
-        }
+    stream.data(function (data) {
 
         emit.call(self, "beforeFileRead", data);
 
@@ -61,15 +57,19 @@ exports.readFile = function (stream) {
 
         var path = data.path;
         // listen for response
-        str.data(function (err, data) {
+        str.data(function (data) {
 
             // emit response
             emit.call(self, "fileRead", {
-                err: err,
                 data: data,
                 path: path,
                 project: self.project
             });
+        });
+
+        // handle error
+        str.error(function (err) {
+            return console.error(new Error(err));
         });
 
         // send data
@@ -77,6 +77,11 @@ exports.readFile = function (stream) {
             path: path,
             project: self.project
         });
+    });
+
+    // handle error
+    stream.error(function (err) {
+        return console.error(new Error(err));
     });
 };
 
@@ -96,11 +101,7 @@ exports.readFile = function (stream) {
  */
 exports.writeFile = function (stream) {
     var self = this;
-    stream.data(function (err, data) {
-
-        if (err) {
-            return console.error(new Error(err));
-        }
+    stream.data(function (data) {
 
         emit.call(self, "beforeFileWrite", data);
 
@@ -108,14 +109,18 @@ exports.writeFile = function (stream) {
         var str = self.flow("writeFile");
 
         // listen for response
-        str.data(function (err, data) {
+        str.data(function (data) {
 
             // emit response
             emit.call(self, "fileWritten", {
-                err: err,
                 data: data,
                 project: self.project
             });
+        });
+
+        // handle error
+        str.error(function (err) {
+            return console.error(new Error(err));
         });
 
         // send data
@@ -124,5 +129,10 @@ exports.writeFile = function (stream) {
             data: data.data,
             project: self.project
         });
+    });
+
+    // handle error
+    stream.error(function (err) {
+        return console.error(new Error(err));
     });
 };
