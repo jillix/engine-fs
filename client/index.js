@@ -7,6 +7,23 @@ function emit(eventName, data) {
     str.write(null, data);
 }
 
+/*!
+ * init
+ *
+ * @name init
+ * @function
+ */
+exports.init = function (stream) {
+    var self = this;
+
+    // init the streams object
+    self._streams = self._streams || {};
+
+    // create the streams
+    self._streams.readFile = self.flow("readFile");
+    self._streams.writeFile = self.flow("writeFile");
+}
+
 /**
  * setProject
  * Caches the project value.
@@ -52,12 +69,9 @@ exports.readFile = function (stream) {
 
         emit.call(self, "beforeFileRead", data);
 
-        // create stream
-        var str = self.flow("readFile");
-
         var path = data.path;
         // listen for response
-        str.data(function (data) {
+        self._streams.readFile.data(function (data) {
 
             // emit response
             emit.call(self, "fileRead", {
@@ -68,12 +82,12 @@ exports.readFile = function (stream) {
         });
 
         // handle error
-        str.error(function (err) {
+        self._streams.readFile.error(function (err) {
             return console.error(new Error(err));
         });
 
         // send data
-        str.write(null, {
+        self._streams.readFile.write(null, {
             path: path,
             project: self.project
         });
@@ -105,11 +119,8 @@ exports.writeFile = function (stream) {
 
         emit.call(self, "beforeFileWrite", data);
 
-        // create stream
-        var str = self.flow("writeFile");
-
         // listen for response
-        str.data(function (data) {
+        self._streams.writeFile.data(function (data) {
 
             // emit response
             emit.call(self, "fileWritten", {
@@ -119,12 +130,12 @@ exports.writeFile = function (stream) {
         });
 
         // handle error
-        str.error(function (err) {
+        self._streams.writeFile.error(function (err) {
             return console.error(new Error(err));
         });
 
         // send data
-        str.write(null, {
+        self._streams.writeFile.write(null, {
             path: data.path,
             data: data.data,
             project: self.project

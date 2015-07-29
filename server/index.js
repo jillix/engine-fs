@@ -20,16 +20,13 @@ exports.readFile = function (stream) {
 
         // validate data
         if (!data) {
-            stream.write(new Error("Missing data object."));
-            return stream.end();
+            return stream.write(new Error("Missing data object."));
         }
         if (typeof data.project !== "string" || !data.project) {
-            stream.write(new Error("Project must be a non-empty string."));
-            return stream.end();
+            return stream.write(new Error("Project must be a non-empty string."));
         }
         if (typeof data.path !== "string" || !data.path) {
-            stream.write(new Error("Path must be a non-empty string."));
-            return stream.end();
+            return stream.write(new Error("Path must be a non-empty string."));
         }
         
         // read file
@@ -37,12 +34,11 @@ exports.readFile = function (stream) {
         Fs.readFile(path, "utf-8", function (err, data) {
 
             if (err) {
-                stream.write(err);
-                return stream.end();
+                console.log(err);
+                return stream.write(err);
             }
 
-            stream.write(null, data);
-            stream.end();
+            return stream.write(null, data);
         });
     });
 };
@@ -61,27 +57,22 @@ exports.writeFile = function (stream) {
 
         // validate data
         if (!data) {
-            stream.write(new Error("Missing data object."));
-            return stream.end();
+            return stream.write(new Error("Missing data object."));
         }
         if (typeof data.project !== "string" || !data.project) {
-            stream.write(new Error("Project must be a non-empty string."));
-            return stream.end();
+            return stream.write(new Error("Project must be a non-empty string."));
         }
         if (typeof data.path !== "string" || !data.path) {
-            stream.write(new Error("Path must be a non-empty string."));
-            return stream.end();
+            return stream.write(new Error("Path must be a non-empty string."));
         }
         if (typeof data.data !== "string") {
-            stream.write(new Error("The file content must be a string."));
-            return stream.end();
+            return stream.write(new Error("The file content must be a string."));
         }
 
         // write data to file
         var path = Path.join(PATH_PROJECTS, data.project, data.path);
         Fs.writeFile(path, data.data, function (err) {
             stream.write(err);
-            stream.end();
         });
     });
 };
