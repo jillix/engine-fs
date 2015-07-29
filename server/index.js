@@ -31,14 +31,17 @@ exports.readFile = function (stream) {
         
         // read file
         var path = Path.join(PATH_PROJECTS, data.project, data.path);
-        Fs.readFile(path, "utf-8", function (err, data) {
+        Fs.readFile(path, "utf-8", function (err, content) {
 
             if (err) {
                 console.log(err);
                 return stream.write(err);
             }
 
-            return stream.write(null, data);
+            return stream.write(null, {
+                content: content,
+                path: data.path
+            });
         });
     });
 };

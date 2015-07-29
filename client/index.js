@@ -69,32 +69,31 @@ exports.readFile = function (stream) {
 
         emit.call(self, "beforeFileRead", data);
 
-        var path = data.path;
-        // listen for response
-        self._streams.readFile.data(function (data) {
-
-            // emit response
-            emit.call(self, "fileRead", {
-                data: data,
-                path: path,
-                project: self.project
-            });
-        });
-
-        // handle error
-        self._streams.readFile.error(function (err) {
-            return console.error(new Error(err));
-        });
-
         // send data
         self._streams.readFile.write(null, {
-            path: path,
+            path: data.path,
             project: self.project
         });
     });
 
     // handle error
     stream.error(function (err) {
+        return console.error(new Error(err));
+    });
+
+    // readFile event data handler
+    self._streams.readFile.data(function (data) {
+        console.log(data);
+        // emit response
+        emit.call(self, "fileRead", {
+            data: data.content,
+            path: data.path,
+            project: self.project
+        });
+    });
+
+    // readFile event error handler
+    self._streams.readFile.error(function (err) {
         return console.error(new Error(err));
     });
 };
@@ -119,27 +118,27 @@ exports.writeFile = function (stream) {
 
         emit.call(self, "beforeFileWrite", data);
 
-        // listen for response
-        self._streams.writeFile.data(function (data) {
-
-            // emit response
-            emit.call(self, "fileWritten", {
-                data: data,
-                project: self.project
-            });
-        });
-
-        // handle error
-        self._streams.writeFile.error(function (err) {
-            return console.error(new Error(err));
-        });
-
         // send data
         self._streams.writeFile.write(null, {
             path: data.path,
             data: data.data,
             project: self.project
         });
+    });
+
+    // writeFile event data handler
+    self._streams.writeFile.data(function (data) {
+
+        // emit response
+        emit.call(self, "fileWritten", {
+            data: data,
+            project: self.project
+        });
+    });
+
+    // writeFile event error handler
+    self._streams.writeFile.error(function (err) {
+        return console.error(new Error(err));
     });
 
     // handle error
