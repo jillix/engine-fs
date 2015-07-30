@@ -24,11 +24,13 @@
       "flow": [
         [
           "readFile",
-          ["link", "readFile"]
+          [">link", "readFile"],
+          [">emit", "fileRead"]
         ],
         [
           "writeFile",
-          ["link", "writeFile"]
+          [">link", "writeFile"],
+          [">emit", "fileWritten"]
         ]
       ]
     }

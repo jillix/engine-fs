@@ -22,19 +22,15 @@ exports.readFile = function (stream) {
         if (!data) {
             return stream.write(new Error("Missing data object."));
         }
-        if (typeof data.project !== "string" || !data.project) {
-            return stream.write(new Error("Project must be a non-empty string."));
-        }
         if (typeof data.path !== "string" || !data.path) {
             return stream.write(new Error("Path must be a non-empty string."));
         }
         
         // read file
-        var path = Path.join(PATH_PROJECTS, data.project, data.path);
+        var path = Path.join(PATH_PROJECTS, data.path);
         Fs.readFile(path, "utf-8", function (err, content) {
 
             if (err) {
-                console.log(err);
                 return stream.write(err);
             }
 
@@ -62,9 +58,6 @@ exports.writeFile = function (stream) {
         if (!data) {
             return stream.write(new Error("Missing data object."));
         }
-        if (typeof data.project !== "string" || !data.project) {
-            return stream.write(new Error("Project must be a non-empty string."));
-        }
         if (typeof data.path !== "string" || !data.path) {
             return stream.write(new Error("Path must be a non-empty string."));
         }
@@ -73,7 +66,7 @@ exports.writeFile = function (stream) {
         }
 
         // write data to file
-        var path = Path.join(PATH_PROJECTS, data.project, data.path);
+        var path = Path.join(PATH_PROJECTS, data.path);
         Fs.writeFile(path, data.data, function (err) {
             stream.write(err);
         });
