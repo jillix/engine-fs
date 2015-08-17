@@ -18,9 +18,6 @@
       ]
     ],
     "client": {
-      "module": [
-        "client/index.js"
-      ],
       "flow": [
         [
           "readFile",
